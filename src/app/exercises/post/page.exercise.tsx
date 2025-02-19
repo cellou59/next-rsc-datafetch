@@ -8,8 +8,10 @@ const Page = () => {
     const fetchPosts = async () => {
       try {
         // ⛏️ Remplace cette url par l'url de l'api next
-        const response = await fetch('http://localhost:4000/posts')
+        const response = await fetch('/exercises/api/posts')
         const data = await response.json()
+        console.log('🚀 ~ fetchPosts ~ data:', data)
+
         setPosts(data as Post[])
       } catch (error) {
         console.error('Error fetching posts:', error)
