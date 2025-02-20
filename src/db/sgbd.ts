@@ -2,9 +2,9 @@
 import {AddTodo, CategoriesEnum, Post, Product, Todo} from '@/lib/type'
 import {JSONFilePreset} from 'lowdb/node'
 
-const randomError = true
-const slowConnexion = true
-const serverResponseTime = 2000
+const randomError = false
+const slowConnexion = false
+const serverResponseTime = 500
 
 type BddDataType = {
   posts?: Post[]
@@ -126,7 +126,7 @@ export async function persistProduct(product: Product) {
 
 export async function updateProduct(product: Product) {
   console.log('updateProduct', product)
-  await simulateUnstableServer({slow: true})
+  // await simulateUnstableServer({slow: true})
   product.updadtedAt = product.updadtedAt ?? new Date().toISOString()
   const db = await lowDb()
   await db.update(({products}) => {

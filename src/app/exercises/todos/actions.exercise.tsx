@@ -15,12 +15,12 @@ export const addTodo = async (todo: AddTodo) => {
   }
 }
 export const updateTodo = async (todo: Todo) => {
-  console.log('update todo action', todo)
   try {
     await updateTodoDao(todo)
-    revalidatePath('/exercises/todos')
   } catch (error) {
     console.error('Failed to update todo', error)
     throw error
+  } finally {
+    revalidatePath('/exercises/todos')
   }
 }

@@ -5,16 +5,13 @@ import {updateTodo as updateTodoAction} from './actions'
 import {toast} from 'sonner'
 export default function TodoItem({todo}: {todo: Todo}) {
   const handleChange = async (isCompleted: boolean) => {
-    const updatedTodo: Todo = {
-      ...todo,
-      isCompleted,
-    }
     try {
-      await updateTodoAction(updatedTodo)
-      toast('Todo has been updated.')
+      await updateTodoAction({
+        ...todo,
+        isCompleted,
+      })
     } catch (error) {
-      console.error(error)
-      toast.error('Failed to update a todo')
+      toast.error(`Failed to update todo.${error}`)
     }
   }
   return (
