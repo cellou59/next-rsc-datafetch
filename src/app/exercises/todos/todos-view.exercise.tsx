@@ -37,7 +37,6 @@ export default function Todos({todos}: TodosProps) {
       isCompleted: false,
       updadtedAt: new Date().toISOString(),
     })
-    // 🐶 Affiche un `toast` avec `Sonner`
     toast('Todo has been created.')
   }
 
