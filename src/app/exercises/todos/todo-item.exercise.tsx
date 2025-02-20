@@ -1,11 +1,21 @@
 import {Checkbox} from '@/components/ui/checkbox'
 import {cn} from '@/lib/utils'
 import {Todo} from '@/lib/type'
-
+import {updateTodo as updateTodoAction} from './actions'
+import {toast} from 'sonner'
 export default function TodoItem({todo}: {todo: Todo}) {
-  // eslint-disable-next-line unicorn/consistent-function-scoping
   const handleChange = async (isCompleted: boolean) => {
-    console.log('isCompleted', isCompleted)
+    const updatedTodo: Todo = {
+      ...todo,
+      isCompleted,
+    }
+    try {
+      await updateTodoAction(updatedTodo)
+      toast('Todo has been updated.')
+    } catch (error) {
+      console.error(error)
+      toast.error('Failed to update a todo')
+    }
   }
   return (
     <>

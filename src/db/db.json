@@ -38,16 +38,16 @@
     {
       "id": 2,
       "title": "Apprendre Next",
-      "isCompleted": false,
+      "isCompleted": true,
       "createdAt": "2024-05-27T07:36:49.940Z",
-      "updadtedAt": "2024-05-27T07:36:49.940Z"
+      "updadtedAt": "2025-02-20T05:30:45.767Z"
     },
     {
       "id": 3,
       "title": "Apprendre les RSC",
-      "isCompleted": false,
+      "isCompleted": true,
       "createdAt": "2024-05-27T07:39:22.859Z",
-      "updadtedAt": "2024-05-27T07:39:20.850Z"
+      "updadtedAt": "2025-02-20T05:43:37.562Z"
     },
     {
       "id": 4,
