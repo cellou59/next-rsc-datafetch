@@ -6,7 +6,7 @@ import TodoItem from './todo-item'
 import {toast} from 'sonner'
 import {Todo} from '@/lib/type'
 // 🐶 Importe le hook `useOptimistic`
-import React, {useOptimistic} from 'react'
+import React, {useOptimistic, startTransition} from 'react'
 import {addTodo as AddTodoAction} from './actions'
 
 interface TodosProps {
@@ -68,7 +68,15 @@ export default function Todos({todos}: TodosProps) {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
-          <Button onClick={handleClick}>Submit</Button>
+          <Button
+            onClick={() => {
+              startTransition(() => {
+                handleClick()
+              })
+            }}
+          >
+            Submit
+          </Button>
         </div>
         <div className="grid gap-4">
           {/* ⛏️ Supprime `todos` et remplace le par `optimisticTodos`  */}
