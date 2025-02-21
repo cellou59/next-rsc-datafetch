@@ -6,7 +6,7 @@ import TodoItem from './todo-item'
 import {toast} from 'sonner'
 import {Todo} from '@/lib/type'
 // 🐶 Importe le hook `useOptimistic`
-import React from 'react'
+import React, {useOptimistic} from 'react'
 import {addTodo as AddTodoAction} from './actions'
 
 interface TodosProps {
@@ -17,7 +17,12 @@ export default function Todos({todos}: TodosProps) {
   const [inputValue, setInputValue] = React.useState('')
 
   // 🐶 Utilise le Hook `useOptimistic` pour avoir
-  // 🤖 const [optimisticTodos, addOptimisticTodo] = ...
+  const [optimisticTodos, addOptimisticTodo] = useOptimistic(
+    todos,
+    (state, newTodo: Todo) => {
+      return [...state, newTodo]
+    }
+  )
 
   // 🐶 Le 1er paramètre de `useOptimistic` est la liste de `todos`
   // 🐶 Le 2ème paramètre de `useOptimistic` est une fonction (un reducer)
@@ -31,17 +36,18 @@ export default function Todos({todos}: TodosProps) {
     }
     const newTodo = {
       // 🐶 Ajoute `id`, il est necessaire pour le type `Todo`, même si normalement la BDD le gère
-      // 🤖 id: optimisticTodos.length + 1,
+      id: optimisticTodos.length + 1,
       title: inputValue,
       isCompleted: false,
       updadtedAt: new Date().toISOString(),
     }
     // 🐶 Appelle `addOptimisticTodo` avec la nouvelle `todo` avant d'appeler le server Action
     try {
+      addOptimisticTodo(newTodo)
+      toast('Todo has been created.')
       await AddTodoAction(newTodo)
       // 🐶 Déplace le `toast` pour l'avoir directement après `addOptimisticTodo`, on ne veut pas attendre
       // On veut une interface réactive
-      toast('Todo has been created.')
     } catch (error) {
       console.error('Error creating todo:', error)
       toast.error(`Failed to create todo.${error}`)
@@ -66,7 +72,7 @@ export default function Todos({todos}: TodosProps) {
         </div>
         <div className="grid gap-4">
           {/* ⛏️ Supprime `todos` et remplace le par `optimisticTodos`  */}
-          {todos.map((todo) => (
+          {optimisticTodos.map((todo) => (
             <TodoItem key={todo.id} todo={todo} />
           ))}
         </div>
