@@ -23,13 +23,11 @@ import {
 import React, {startTransition, useActionState} from 'react'
 import {CategoriesEnum, Product} from '@/lib/type'
 
-//🐶 Remplace cet import par `onSubmitAction`
 import {onSubmitAction} from '../actions'
 import {toast} from 'sonner'
 import {FormSchemaType, formSchema} from '../schema'
 
 export default function ProductForm({product}: {product?: Product}) {
-  // 🐶 Utilise le Hook 'useActionState' avec 'onSubmitAction'
   const [state, formAction, isPending] = useActionState(onSubmitAction, {
     success: true,
   })
@@ -80,6 +78,7 @@ export default function ProductForm({product}: {product?: Product}) {
       toast.error(state.message ?? 'Error')
     }
   }, [form, state, state?.success])
+
   React.useEffect(() => {
     form.reset({
       id: product?.id ?? '',
