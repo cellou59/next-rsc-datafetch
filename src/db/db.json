@@ -25,6 +25,46 @@
       "category": "furniture",
       "createdAt": "2024-04-25T05:56:06.593Z",
       "updadtedAt": "2024-05-30T02:54:24.636Z"
+    },
+    {
+      "id": "3",
+      "title": "efefefef",
+      "price": 2,
+      "description": " vfv",
+      "category": "furniture",
+      "quantity": 1,
+      "createdAt": "2025-02-23T16:23:31.212Z",
+      "updadtedAt": "2025-02-23T16:23:31.212Z"
+    },
+    {
+      "id": "4",
+      "title": "vffv",
+      "price": 2,
+      "description": "vfgbv",
+      "category": "default",
+      "quantity": 1,
+      "createdAt": "2025-02-23T16:24:30.473Z",
+      "updadtedAt": "2025-02-23T16:24:30.474Z"
+    },
+    {
+      "id": "5",
+      "title": "vefvf",
+      "price": 1,
+      "description": "v fvfg",
+      "category": "lighting",
+      "quantity": 2,
+      "createdAt": "2025-02-23T16:25:48.173Z",
+      "updadtedAt": "2025-02-23T16:25:48.173Z"
+    },
+    {
+      "id": "6",
+      "title": "dcdf",
+      "price": 2,
+      "description": "v v v dfv ",
+      "category": "lighting",
+      "quantity": 2,
+      "createdAt": "2025-02-23T16:34:23.028Z",
+      "updadtedAt": "2025-02-23T16:34:23.028Z"
     }
   ],
   "todos": [

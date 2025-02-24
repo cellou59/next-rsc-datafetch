@@ -18,22 +18,31 @@ export async function onSubmitAction(
 ): Promise<FormStateSimple> {
   //simulate slow server
   await new Promise((resolve) => setTimeout(resolve, 1000))
-  console.log('data', data)
-  // 🐶 Valide les données avec `Zod`
-  // 🤖
-  // const formData = Object.fromEntries(data)
-  // const parsed = formSchema.safeParse(formData)
 
+  console.log('data', data)
+  const formData = Object.fromEntries(data)
+  const formSchemaOptional = formSchema.partial({
+    id: true,
+    createdAt: true,
+  })
+  const parsed = formSchemaOptional.safeParse(formData)
+  if (!parsed.success) {
+    logZodError(data)
+    return {error: true, message: `Parse error`}
+  }
   // 🐶 Si les données ne sont pas valides (`if (!parsed.success)`), retourne un objet de type `FormStateSimple`
   // 🤖 Aide toi de `logZodError(data)` pour afficher les erreurs
 
   // 🐶 Appelle la BDD dans un `try` `catch` avec :
-  // 🤖 await persistProductDao(parsed.data)
-
-  return {error: false, message: 'Success'}
+  try {
+    await persistProductDao(parsed.data)
+    return {error: false, message: 'Success'}
+  } catch (error) {
+    console.error(error)
+    return {error: true, message: `Oups something goes wrong`}
+  }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function logZodError(data: FormData) {
   const formData = Object.fromEntries(data)
   const parsed = formSchema.safeParse(formData)
