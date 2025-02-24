@@ -25,6 +25,26 @@
       "category": "furniture",
       "createdAt": "2024-04-25T05:56:06.593Z",
       "updadtedAt": "2024-10-30T10:16:40.902Z"
+    },
+    {
+      "id": "3",
+      "title": "ccs",
+      "price": 1,
+      "description": "dasa",
+      "category": "default",
+      "quantity": 10,
+      "createdAt": "2025-02-24T07:09:36.463Z",
+      "updadtedAt": "2025-02-24T07:09:52.001Z"
+    },
+    {
+      "id": "4",
+      "title": "test",
+      "price": 1,
+      "description": " cdcsc",
+      "category": "default",
+      "quantity": 10,
+      "createdAt": "2025-02-24T07:10:45.579Z",
+      "updadtedAt": "2025-02-24T07:10:57.649Z"
     }
   ],
   "todos": [

@@ -1,27 +1,25 @@
 'use server'
 import {
   deleteProduct as deleteProductDao,
+  getProductByName,
   getProducts as getProductsDao,
   persistProduct as persistProductDao,
 } from '@/db/sgbd'
 
 import {revalidatePath} from 'next/cache'
 import {Product} from '@/lib/type'
-import {formSchema} from './schema'
+import {formSchema, FormSchemaType} from './schema'
 
-// 🐶 Modifie le type `FormState`  de `onSubmitAction`
-type FormState = {error: boolean; message: string}
-// 🤖
-// type ValidationError = {
-//   field: keyof FormSchemaType
-//   message: string
-// }
+type ValidationError = {
+  field: keyof FormSchemaType
+  message: string
+}
 
-// export type FormState = {
-//   success: boolean
-//   errors?: ValidationError[]
-//   message?: string
-// }
+export type FormState = {
+  success: boolean
+  errors?: ValidationError[]
+  message?: string
+}
 
 export async function onSubmitAction(
   prevState: FormState,
@@ -32,32 +30,51 @@ export async function onSubmitAction(
   const parsed = formSchema.safeParse(formData)
   if (!parsed.success) {
     logZodError(data)
-    // 🐶 Tu vas devoir ici récupérer toutes les erreurs de `Zod`,
-    // C'est à dire les champs et les messages d'erreurs
-
-    // 🐶 Crée `validationErrors` de type `ValidationError[]`
-    // 🤖 const validationErrors: ValidationError[] = ...
-    // 🐶 Utilise `parsed.error.errors.map(err)` =>  pour parcourir les erreurs
-    // 🐶 Utilise 🤖 `field: err.path[0] as keyof FormSchemaType` pour récupérer le champs
-    // 🐶 Utilise 🤖 `message: zod server error ${err.message}` pour le message
-
-    // 🐶 Retourne ensuite
-    // 🤖
-    // return {
-    //   success: false,
-    //   errors: validationErrors,
-    //   message: 'Server Error',
-    // }
-    return {error: true, message: `erreur(s) de validation`}
+    const validationErrors: ValidationError[] = parsed.error.errors.map(
+      (err) => {
+        return {
+          field: err.path[0] as keyof FormSchemaType,
+          message: `zod server error ${err.message}`,
+        }
+      }
+    )
+    return {
+      success: false,
+      errors: validationErrors,
+      message: 'Server Error',
+    }
   }
+  const title = data.get('title')?.toString()
+  const haveTooMuchSpace = title?.includes('  ')
+  if (haveTooMuchSpace)
+    return {
+      success: false,
+      message: `Server Error`,
+      errors: [
+        {
+          field: 'title' as keyof FormSchemaType,
+          message: 'Product title have to much space',
+        },
+      ],
+    }
+  const prod = await getProductByName(data.get('title')?.toString() ?? '')
+  if (prod)
+    return {
+      success: false,
+      message: `Server Error`,
+      errors: [
+        {
+          field: 'title' as keyof FormSchemaType,
+          message: 'Product al0ready exists',
+        },
+      ],
+    }
   try {
     await persistProductDao(parsed.data as Product)
     revalidatePath('/exercises/shop-admin')
-    // 🐶 Retourne le bon type
-    return {error: false, message: 'Success'}
+    return {success: true, message: 'Product Saved'}
   } catch (error) {
-    // 🐶 Retourne le bon type
-    return {error: true, message: `Server Error ${error}`}
+    return {success: false, message: `Server Error ${error}`}
   }
 }
 
